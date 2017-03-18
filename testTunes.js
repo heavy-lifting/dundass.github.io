@@ -1,25 +1,27 @@
 (function() {
 	"use strict";
-	
+
+	// tonight: records, samples from mod and old tunes, flocking js
+
 	fluid.registerNamespace("testTunes");
-	
+
 	var environment = flock.init();
-	
+
 	testTunes.play = function() {
 		var shitSynth = flock.synth({
 			synthDef: {
-				ugen: "flock.ugen.sin",
+				ugen: "flock.ugen.sinOsc",
 				freq: {
-					ugen: "flock.ugen.lfNoise",
-					freq: 10,
+					ugen: "flock.ugen.lfSaw",
+					freq: {ugen: "flock.ugen.sin", freq: 0.25, mul: 100, add: 100},
 					mul: 380,
-					add: 60
+					add: 60,
 				},
 				mul: 0.1
 			}
 		});
-		
+
 		environment.start();
 	};
-	
+
 }());
