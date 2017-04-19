@@ -1,8 +1,6 @@
 (function() {
 	"use strict";
 
-	// tonight: records, samples from mod and old tunes, flocking js
-
 	fluid.registerNamespace("testTunes");
 
 	var environment = flock.init();
