@@ -1,9 +1,16 @@
 body {
   font-family: 'Ubuntu', sans-serif;
   text-align: center;
+  background-color: #2F003F;
+}
+div {
+  background-color: inherit;
+  color: #EEFFEE;
+  margin: auto;
 }
 h1 {
   font-size: 30px;
+  padding-top: 35%;
 }
 p {
   font-size: 18px;

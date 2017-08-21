@@ -12,32 +12,25 @@
 	</head>
 
 	<body>
-		<h1>dundass</h1>
-		<p>
-		>^-.-^<<br><br>
-		<a href="sound.html">noises here</a>
-		</p>
+		<div id="mainDiv">
+			<h1>dundass</h1>
 
-		<p id="sizeInfo"></p>
-		<p id="out"></p>
+			<p>
+				hello<br /><br />
+				<!-- i code, play music, project visuals, play music with code, record + process sounds, make visuals with code -->
+				i make music and visuals, by hand and by machine<br /><br />
+
+			</p>
+		</div>
 
 		<script>
 			var w = window.innerWidth;
 			var h = window.innerHeight;
-			document.getElementById("sizeInfo").innerHTML = "window size = " + w + "*" + h;
-
-			var a = [0, 1, 2, 3, 4, 5, 6, 7];
-			const mult = (x, y=2) => x * y;
-			const add = (x, y=1) => x + y;
-			const compose = (a, b) => (c) => a(b(c));
-			//const pipe = (fn,...fns) => (...args) => fns.reduce((acc, fn) => fn(acc), fn(...args));
-			const pipe = (fns) => (x) => fns.reduce((v, f) => f(v), x);
-			const multadd = pipe([mult, mult, add, add]);
-
-			var b = a.map((x) => multadd(x));
-
-			document.getElementById("out").innerHTML = b + " :)";
+			var body = document.getElementsByTagName("body");
+			var mainDiv = document.getElementById("mainDiv");
+			//body[0].style.height = h + "px";
+			if(w > h) mainDiv.style.width = h + "px";
+			mainDiv.style.height = h * 0.95 + "px";
 		</script>
-
 	</body>
 </html>
