@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>panacea // dundass</title>
+    <link rel="stylesheet" type="text/css" href="canvas.css">
+  </head>
+
+  <body>
+    <div id="canvasDiv">
+      <canvas id="mainCanvas"> canvases not supported </canvas>
+    </div>
+
+    <script>
+      var canvasDiv = document.getElementById('canvasDiv');
+      canvasDiv.style.width = window.innerWidth + 'px';
+      canvasDiv.style.height = window.innerHeight + 'px';
+
+      var canvas = document.getElementById("mainCanvas");
+      // canvas.style.width = window.innerWidth + 'px';
+      // canvas.style.height = window.innerHeight + 'px';
+      var ctx = canvas.getContext("2d");
+      if ( canvas.getContext ) {
+        doTimer();
+      }
+      function draw() {
+        canvasDiv.style.width = window.innerWidth + 'px';
+        canvasDiv.style.height = window.innerHeight + 'px';
+        ctx.canvas.width  = window.innerWidth;
+        ctx.canvas.height = window.innerHeight;
+        ctx.fillStyle = "#FF0000";
+        ctx.fillRect(Math.random() * 400, Math.random() * 400, 80, 80);
+        //...drawing code...
+      }
+      function doTimer() {
+        timerID = setInterval( "draw()", 1000.0 / 60.0 );
+      }
+    </script>
+  </body>
+</html>
