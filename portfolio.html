@@ -4,7 +4,6 @@
   <head>
     <meta charset="utf-8" />
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-    <style>canvas {border: 0;}</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
     <script>
       var w = window.innerWidth;
@@ -15,6 +14,9 @@
 
       function setup() {
         createCanvas(w, h);
+        var body = document.getElementsByTagName('body');
+        body[0].style.margin = 0 + 'px';
+        resizeCanvas(w, h);
         background(0);
       }
       function draw() {
@@ -63,6 +65,7 @@
   	    pop();
       }
     </script>
+    <!-- <style>body {margin: 0;}</style> -->
   </head>
 
   <body>
