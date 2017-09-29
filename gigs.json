@@ -1,5 +1,5 @@
 {
-	"gigs": [
+	"solo": [
 		{
 			"date": "02-10-15",
 			"loc": "wharf chambers, leeds",
@@ -20,5 +20,11 @@
 			"loc": "hyde park book club, leeds",
 			"event": "leftovers"
 		}
-		]
+	],
+	"Lo Egin": [
+
+	],
+	"TYPE": [
+
+	]
 }
