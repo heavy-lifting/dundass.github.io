@@ -8,12 +8,10 @@
     <script src="js/p5sketches/breathingeye.js"></script>
     <script>
       p5.disableFriendlyErrors = true;
-      for(var prop in p5) {
-        console.log(prop);
-      }
 
       var w = window.innerWidth;
       var h = window.innerHeight;
+      console.log(w + ' * ' + h);
 
       //var rAngle, tAngle;
       var breathe = new BreathingEye();
@@ -23,10 +21,15 @@
         document.getElementsByTagName('body')[0].style.margin = 0 + 'px';
         background(0);
       }
+
       function draw() {
 
         breathe.render();
 
+      }
+
+      function mousePressed() {
+        breathe.rotateFactor = mouseX;
       }
     </script>
     <!-- <style>body {margin: 0;}</style> -->
