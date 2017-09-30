@@ -24,12 +24,15 @@
 
       function draw() {
 
+        if(mouseIsPressed) {
+          breathe.rotateFactor = 50 + mouseY / 5;
+        }
+
         breathe.render();
 
       }
 
       function mousePressed() {
-        breathe.rotateFactor = mouseX;
       }
     </script>
     <!-- <style>body {margin: 0;}</style> -->
