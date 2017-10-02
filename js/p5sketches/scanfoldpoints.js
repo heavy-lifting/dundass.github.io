@@ -66,7 +66,6 @@ ScanFoldPoints.prototype.initMotion = function() {
 
 ScanFoldPoints.prototype.randomiseTrigMappings = function() {
   // assigns a new non-linear coordinate behaviour
-  console.log("new map");
 	this.trig1 = int(random(4)); // used to be (int)random(4) in ScanFoldPoints.java
 	this.trig2 = int(random(4));
 	this.t_mult1 = random(0.02, 0.08);
@@ -77,10 +76,10 @@ ScanFoldPoints.prototype.drawParticles = function(index) {
 	push();
   noiseSeed(99);
 	translate(width / 2, height / 2);
-	strokeWeight(1);
+	strokeWeight(2);
 	colorMode(HSB);
 	for(var i = 0; i < this.p.length; i++) {
-		stroke(10 + ((3 * noise(index / 10.0)) - 1), this.sat, 255);
+		stroke(10 + ((10 * noise(index)) - 2), this.sat, 255);
 		point(this.p[i].x, this.p[i].y);
 	}
 	pop();
@@ -98,7 +97,7 @@ ScanFoldPoints.prototype.render = function() {
 		//this.sat = 20 + (Math.random() * 180);
 	}
 	this.initRand();
-	for(var i = 0; i < 200; i++) {
+	for(var i = 0; i < 100; i++) {
 		this.update();
 		this.drawParticles(i);
 	}
