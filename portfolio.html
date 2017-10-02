@@ -6,7 +6,7 @@
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
     <script src="js/p5sketches/breathingeye.js"></script>
-    <script src="js/p5sketches/scanfoldpoints.js"></script>
+    <script src="js/p5sketches/touchfoldpoints.js"></script>
     <script>
 
       p5.disableFriendlyErrors = true;
@@ -17,12 +17,12 @@
 
       //var rAngle, tAngle;
       var breathe = new BreathingEye();
-      var scanfold = new ScanFoldPoints();
+      var touchfold = new TouchFoldPoints();
 
       function setup() {
         createCanvas(w, h);
         document.getElementsByTagName('body')[0].style.margin = 0 + 'px';
-        scanfold.initi();
+        touchfold.initi();
         background(0);
         console.log(displayWidth + ' * ' + displayHeight);
       }
@@ -34,7 +34,7 @@
         }
 
         //breathe.render();
-        scanfold.render();
+        touchfold.render();
 
       }
 
