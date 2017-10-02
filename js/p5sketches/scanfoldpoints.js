@@ -19,19 +19,19 @@ ScanFoldPoints.prototype.update = function() {
 			if(this.reloadCount % 2 == 0) a = d / this.p[i].y;
 			else a = d / this.p[j].y;
 			switch(this.trig1) {
-  			case 0:  trig = sin(a);  break;
-  			case 1:  trig = cos(a);  break;
-  			case 2:  trig = tan(a);  break;
-  			case 3:  trig = atan(a);  break;
+  			case 0:  trig = Math.sin(a);  break;
+  			case 1:  trig = Math.cos(a);  break;
+  			case 2:  trig = Math.tan(a);  break;
+  			case 3:  trig = Math.atan(a);  break;
 			}
 			this.p[i].x += (this.t_mult1 * trig);
 			if(this.reloadCount % 3 <= 1) a = d / this.p[i].x;
 			else a = d / this.p[j].x;
 			switch(this.trig2) {
-  			case 0:  trig = sin(a);  break;
-  			case 1:  trig = cos(a);  break;
-  			case 2:  trig = tan(a);  break;
-  			case 3:  trig = atan(a);  break;
+  			case 0:  trig = Math.sin(a);  break;
+  			case 1:  trig = Math.cos(a);  break;
+  			case 2:  trig = Math.tan(a);  break;
+  			case 3:  trig = Math.atan(a);  break;
 			}
 			this.p[i].y += (this.t_mult2 * trig);
 		}
@@ -58,7 +58,7 @@ ScanFoldPoints.prototype.initMotion = function() {
 	this.loc = createVector(random(-width / 2, width / 2), random(-height / 2, -height / 4));
 	this.tar = createVector(this.loc.x * -1, random(height / 4, height / 2));
 
-	if(random(1) > 0.5) {
+	if(Math.random() > 0.5) {
 		this.loc.y *= -1;
 		this.tar.y *= -1;
 	}
@@ -66,10 +66,10 @@ ScanFoldPoints.prototype.initMotion = function() {
 
 ScanFoldPoints.prototype.randomiseTrigMappings = function() {
   // assigns a new non-linear coordinate behaviour
-	this.trig1 = int(random(4)); // used to be (int)random(4) in ScanFoldPoints.java
-	this.trig2 = int(random(4));
-	this.t_mult1 = random(0.02, 0.08);
-	this.t_mult2 = random(0.02, 0.08);
+	this.trig1 = int(Math.random() * 4); // used to be (int)random(4) in ScanFoldPoints.java
+	this.trig2 = int(Math.random() * 4);
+	this.t_mult1 = 0.02 + (Math.random() * 0.06);
+	this.t_mult2 = 0.02 + (Math.random() * 0.06);
 }
 
 ScanFoldPoints.prototype.drawParticles = function(index) {
@@ -79,7 +79,7 @@ ScanFoldPoints.prototype.drawParticles = function(index) {
 	strokeWeight(2);
 	colorMode(HSB);
 	for(var i = 0; i < this.p.length; i++) {
-		stroke(10 + ((10 * noise(index)) - 2), this.sat, 255);
+		stroke((this.loc.x / 4) + ((70 * noise(index)) - 10), this.sat, 255);
 		point(this.p[i].x, this.p[i].y);
 	}
 	pop();
@@ -108,6 +108,6 @@ ScanFoldPoints.prototype.initi = function() {
   this.tar = createVector(0, 0);
 	this.initMotion();
   for(var i = 0; i < 40; i++) {
-    this.p[i] = createVector(random(-150, 150), random(-150, 150));
+    this.p[i] = createVector(-150 + (Math.random() * 300), -150 + (Math.random() * 300));
   }
 }
