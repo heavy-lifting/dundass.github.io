@@ -74,8 +74,8 @@ TouchFoldPoints.prototype.drawParticles = function(index) {
 
 TouchFoldPoints.prototype.render = function() {
   background(0);
-	this.loc.x = mouseX - width / 2;
-	this.loc.y = mouseY - height / 2;
+  this.loc.x = mouseX - width / 2;
+  this.loc.y = mouseY - height / 2;
 	if(frameCount % 150 == 0) {
 		this.reloadCount++;
 		if(this.reloadCount % 3 == 0) this.randomiseTrigMappings();
