@@ -100,9 +100,9 @@ Enemy.prototype.render = function(imgs) {
   imageMode(CENTER);
   if(imgs) {
     if(this.awake == true) {
-      image(imgs[2], this.loc.x, this.loc.y);
+      image(imgs[2+parseInt(frameCount/30)%2], this.loc.x, this.loc.y);
     } else {
-      image(imgs[parseInt(frameCount/30)%60], this.loc.x, this.loc.y);
+      image(imgs[parseInt(frameCount/30)%2], this.loc.x, this.loc.y);
     }
   }
   else {
