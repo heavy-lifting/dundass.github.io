@@ -4,7 +4,9 @@
   <head>
     <meta charset="utf-8" />
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <title>Grabbit !</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/addons/p5.dom.js"></script>
     <script src="js/p5sketches/grabbit.js"></script>
     <script>
 
@@ -15,9 +17,14 @@
       console.log(w + ' * ' + h);
 
       var grabbit = null;
+      var cnv;
+
+      // function preload() {
+      // }
 
       function setup() {
-        createCanvas(h, h);
+        cnv = createCanvas(h, h);
+        centerCnv();
         document.getElementsByTagName('body')[0].style.margin = 0 + 'px';
         document.getElementsByTagName('body')[0].style.padding = 0 + 'px';
         document.documentElement.style.overflow = 'hidden';
@@ -56,10 +63,19 @@
         if(key == 'd' || key == 'D') grabbit.wasd[3] = false;
       }
 
+      function centerCnv() {
+        cnv.position((windowWidth - width) / 2, (windowHeight - height) / 2);
+      }
+
+      function windowResized() {
+        centerCnv();
+      }
+
       // function touchStarted() {
       //   // empty, interrupts the touch + drag/scroll
       // }
     </script>
+    <style>body {background-color: black;}</style>
     <!-- <style>body {margin: 0;}</style> -->
   </head>
 

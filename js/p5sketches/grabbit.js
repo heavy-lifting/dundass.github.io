@@ -1,3 +1,24 @@
+function Assets() {
+  this.grassImg = null;
+  this.foodImgs = [];
+  this.farmerImgs = [];
+  this.grabbitImgs = [];
+}
+
+Assets.prototype.loadAssets = function() {
+  this.grassImg = loadImage("assets/grabbit-grass.png");
+  this.foodImgs[0] = loadImage("assets/grabbit-food1.png");
+  this.foodImgs[1] = loadImage("assets/grabbit-food2.png");
+  this.farmerImgs[0] = loadImage("assets/grabbit-farmer-sleep1.png");
+  this.farmerImgs[1] = loadImage("assets/grabbit-farmer-sleep2.png");
+  this.farmerImgs[2] = loadImage("assets/grabbit-farmer-awake1.png");
+  this.farmerImgs[3] = loadImage("assets/grabbit-farmer-awake2.png");
+  this.grabbitImgs[0] = loadImage("assets/grabbit1.png");
+  this.grabbitImgs[1] = loadImage("assets/grabbit2.png");
+  this.grabbitImgs[2] = loadImage("assets/grabbit4.png");
+  this.grabbitImgs[3] = loadImage("assets/grabbit3.png");
+}
+
 function Scoreboard(maxLevel) {
   this.live = 1;
   this.level = 1;
@@ -56,7 +77,7 @@ function Enemy(playerx, playery) {
 }
 
 Enemy.prototype.update = function(playerx, playery) {
-  if(dist(this.loc.x, this.loc.y, playerx, playery) < height / 5) {
+  if(dist(this.loc.x, this.loc.y, playerx, playery) < height / 4.5) {
     var playerloc = new p5.Vector(playerx, playery);
     var acc = p5.Vector.sub(playerloc, this.loc);
     acc.setMag(0.1);
@@ -83,7 +104,7 @@ Enemy.prototype.render = function() {
 // }
 
 function Food() {
-  this.loc = new p5.Vector(Math.random() * width, Math.random() * height);
+  this.loc = new p5.Vector(35+(Math.random() * width-35), 35+(Math.random() * height-35));
   this.eaten = true;
 }
 
@@ -97,13 +118,15 @@ Food.prototype.render = function() {
 }
 
 Food.prototype.reset = function(playerx, playery) {
-  this.loc = new p5.Vector(Math.random() * width, Math.random() * height);
-  while(dist(this.loc.x, this.loc.y, playerx, playery) < width / 5) {
-      this.loc = new p5.Vector(Math.random() * width, Math.random() * height);
+  this.loc = new p5.Vector(35+(Math.random() * width-35), 35+(Math.random() * height-35));
+  while(dist(this.loc.x, this.loc.y, playerx, playery) < width / 4.5) {
+      this.loc = new p5.Vector(35+(Math.random() * width-35), 35+(Math.random() * height-35));
   }
 }
 
 function Grabbit() {
+  this.assets = new Assets();
+  this.assets.loadAssets();
   this.maxFood = 11;
   this.player = new Player();
   this.board = new Scoreboard(this.maxFood);
