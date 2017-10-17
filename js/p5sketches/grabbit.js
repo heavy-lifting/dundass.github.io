@@ -64,10 +64,12 @@ Player.prototype.update = function(dirs) {
   if(this.loc.y > height) this.loc.y = height;
 }
 
-Player.prototype.render = function() {
+Player.prototype.render = function(img) {
   noStroke();
   fill(0);
-  ellipse(this.loc.x, this.loc.y, 50, 50);
+  imageMode(CENTER);
+  if(img) image(img, this.loc.x, this.loc.y);
+  else ellipse(this.loc.x, this.loc.y, 50, 50);
 }
 
 function Enemy(playerx, playery) {
@@ -90,10 +92,12 @@ Enemy.prototype.update = function(playerx, playery) {
   }
 }
 
-Enemy.prototype.render = function() {
+Enemy.prototype.render = function(img) {
   noStroke();
   fill(255, 0, 0);
-  ellipse(this.loc.x, this.loc.y, 20, 20);
+  imageMode(CENTER);
+  if(img) image(img, this.loc.x, this.loc.y);
+  else ellipse(this.loc.x, this.loc.y, 20, 20);
 }
 
 // Enemy.prototype.reset = function(playerx, playery) {
@@ -108,12 +112,13 @@ function Food() {
   this.eaten = true;
 }
 
-Food.prototype.render = function() {
+Food.prototype.render = function(img) {
   if(this.eaten == false) {
     noStroke();
     fill(0, 255, 0);
     rectMode(CENTER);
-    rect(this.loc.x, this.loc.y, 50, 50);
+    if(img) image(img, this.loc.x, this.loc.y);
+    else rect(this.loc.x, this.loc.y, 50, 50);
   }
 }
 
@@ -156,9 +161,11 @@ Grabbit.prototype.update = function() {
 }
 
 Grabbit.prototype.render = function() {
-  this.player.render();
-  for(var i = 0; i < this.foods.length; i++) this.foods[i].render();
-  this.enemy.render();
+  imageMode(CORNER);
+  image(this.assets.grassImg, 0, 0);
+  this.player.render(this.assets.grabbitImgs[0]);
+  for(var i = 0; i < this.foods.length; i++) this.foods[i].render(this.assets.foodImgs[0]);
+  this.enemy.render(this.assets.farmerImgs[0]);
   this.board.render();
 }
 
