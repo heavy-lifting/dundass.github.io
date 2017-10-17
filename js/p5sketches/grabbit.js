@@ -31,7 +31,7 @@ Scoreboard.prototype.update = function() {
 }
 
 Scoreboard.prototype.render = function() {
-  fill(0);
+  fill(255);
   if(this.won) {
     textSize(40);
     text("woohoo ! you won :)", width / 2 - 50, height / 2 - 50);
@@ -47,6 +47,7 @@ Scoreboard.prototype.render = function() {
 function Player() {
   this.loc = new p5.Vector(200 + (Math.random()*(width-200)), 200 + (Math.random()*(height-200)));
   this.speed = 3;
+  this.moving = false;
 }
 
 Player.prototype.update = function(dirs) {
@@ -56,6 +57,8 @@ Player.prototype.update = function(dirs) {
   if(dirs[1]) this.loc.x -= this.speed;
   if(dirs[2]) this.loc.y += this.speed;
   if(dirs[3]) this.loc.x += this.speed;
+  if(dirs[0] || dirs[1] || dirs[2] || dirs[3]) this.moving = true;
+  else this.moving = false;
 
   // boundary checks
   if(this.loc.x < 0) this.loc.x = 0;
@@ -64,12 +67,21 @@ Player.prototype.update = function(dirs) {
   if(this.loc.y > height) this.loc.y = height;
 }
 
-Player.prototype.render = function(img) {
+Player.prototype.render = function(imgs, dirs) {
   noStroke();
   fill(0);
   imageMode(CENTER);
-  if(img) image(img, this.loc.x, this.loc.y);
-  else ellipse(this.loc.x, this.loc.y, 50, 50);
+  if(imgs) {
+    if(this.moving) {
+      if(dirs[1]) image(imgs[parseInt(frameCount/30)%2], this.loc.x, this.loc.y);
+      else image(imgs[2+parseInt(frameCount/30)%2], this.loc.x, this.loc.y);
+    } else {
+      image(imgs[2], this.loc.x, this.loc.y);
+    }
+  }
+  else {
+    ellipse(this.loc.x, this.loc.y, 50, 50);
+  }
 }
 
 function Enemy(playerx, playery) {
@@ -173,7 +185,7 @@ Grabbit.prototype.update = function() {
 Grabbit.prototype.render = function() {
   imageMode(CORNER);
   image(this.assets.grassImg, 0, 0);
-  this.player.render(this.assets.grabbitImgs[0]);
+  this.player.render(this.assets.grabbitImgs, this.wasd);
   for(var i = 0; i < this.foods.length; i++) this.foods[i].render(this.assets.foodImgs[1]);
   this.enemy.render(this.assets.farmerImgs);
   this.board.render();
