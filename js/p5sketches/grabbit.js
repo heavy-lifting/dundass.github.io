@@ -79,25 +79,35 @@ function Enemy(playerx, playery) {
 }
 
 Enemy.prototype.update = function(playerx, playery) {
-  if(dist(this.loc.x, this.loc.y, playerx, playery) < height / 4.5) {
+  if(dist(this.loc.x, this.loc.y, playerx, playery) < height / 4) {
     var playerloc = new p5.Vector(playerx, playery);
     var acc = p5.Vector.sub(playerloc, this.loc);
     acc.setMag(0.1);
     this.vel.add(acc);
     this.vel.limit(3);
     this.loc.add(this.vel);
+    this.awake = true;
   } else {
     this.vel.x = 0;
     this.vel.y = 0;
+    this.awake = false;
   }
 }
 
-Enemy.prototype.render = function(img) {
+Enemy.prototype.render = function(imgs) {
   noStroke();
   fill(255, 0, 0);
   imageMode(CENTER);
-  if(img) image(img, this.loc.x, this.loc.y);
-  else ellipse(this.loc.x, this.loc.y, 20, 20);
+  if(imgs) {
+    if(this.awake == true) {
+      image(imgs[2], this.loc.x, this.loc.y);
+    } else {
+      image(imgs[parseInt(frameCount/30)%60], this.loc.x, this.loc.y);
+    }
+  }
+  else {
+    ellipse(this.loc.x, this.loc.y, 20, 20);
+  }
 }
 
 // Enemy.prototype.reset = function(playerx, playery) {
@@ -124,7 +134,7 @@ Food.prototype.render = function(img) {
 
 Food.prototype.reset = function(playerx, playery) {
   this.loc = new p5.Vector(35+(Math.random() * width-35), 35+(Math.random() * height-35));
-  while(dist(this.loc.x, this.loc.y, playerx, playery) < width / 4.5) {
+  while(dist(this.loc.x, this.loc.y, playerx, playery) < width / 4) {
       this.loc = new p5.Vector(35+(Math.random() * width-35), 35+(Math.random() * height-35));
   }
 }
@@ -164,8 +174,8 @@ Grabbit.prototype.render = function() {
   imageMode(CORNER);
   image(this.assets.grassImg, 0, 0);
   this.player.render(this.assets.grabbitImgs[0]);
-  for(var i = 0; i < this.foods.length; i++) this.foods[i].render(this.assets.foodImgs[0]);
-  this.enemy.render(this.assets.farmerImgs[0]);
+  for(var i = 0; i < this.foods.length; i++) this.foods[i].render(this.assets.foodImgs[1]);
+  this.enemy.render(this.assets.farmerImgs);
   this.board.render();
 }
 
