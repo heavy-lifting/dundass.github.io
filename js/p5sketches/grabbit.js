@@ -73,8 +73,8 @@ Player.prototype.render = function(imgs, dirs) {
   imageMode(CENTER);
   if(imgs) {
     if(this.moving) {
-      if(dirs[1]) image(imgs[parseInt(frameCount/30)%2], this.loc.x, this.loc.y);
-      else image(imgs[2+parseInt(frameCount/30)%2], this.loc.x, this.loc.y);
+      if(dirs[1]) image(imgs[parseInt(frameCount/15)%2], this.loc.x, this.loc.y);
+      else image(imgs[2+parseInt(frameCount/15)%2], this.loc.x, this.loc.y);
     } else {
       image(imgs[2], this.loc.x, this.loc.y);
     }

@@ -5,40 +5,32 @@
     <meta charset="utf-8" />
     <title>dundass - sounds</title>
 
-		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 
-		<script src="js/flocking/dist/flocking-all.js"></script>
-		<script src="js/testTunes.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/addons/p5.sound.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
   </head>
 
   <body>
-    <p>
+    <p style="color: white">
       here lies sounds
     </p>
 
-		<p id="sizeInfo"></p>
-		<p id="out"></p>
-
 		<script>
-			console.log(testTunes);
-			testTunes.play();
+    $.getJSON('http://www.geoplugin.net/json.gp?jsoncallback=?', function(data) {
+      console.log(JSON.stringify(data, null, 2));
+    });
 
-      var w = window.innerWidth;
-			var h = window.innerHeight;
-			document.getElementById("sizeInfo").innerHTML = "window size = " + w + "*" + h;
+    function setup() {
 
-			var a = [0, 1, 2, 3, 4, 5, 6, 7];
-			const mult = (x, y=2) => x * y;
-			const add = (x, y=1) => x + y;
-			const compose = (a, b) => (c) => a(b(c));
-			//const pipe = (fn,...fns) => (...args) => fns.reduce((acc, fn) => fn(acc), fn(...args));
-			const pipe = (fns) => (x) => fns.reduce((v, f) => f(v), x);
-			const multadd = pipe([mult, mult, add, add]);
+    }
 
-			var b = a.map((x) => multadd(x));
+    function draw() {
 
-			document.getElementById("out").innerHTML = b + " :)";
+    }
+
 		</script>
   </body>
 </html>

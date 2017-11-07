@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>explorer // dundass</title>
+    <link rel="stylesheet" type="text/css" href="canvas.css">
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.hotkeys@0.1.0/jquery.hotkeys.js"></script>
+    <script src="js/octavecurve.js"></script>
+  </head>
+
+  <body>
+    <!-- <div id="canvasDiv">
+      <canvas id="mainCanvas"> canvases not supported </canvas>
+    </div> -->
+
+    <script>
+      var fundamental = 64;
+      var oct = new OctaveCurve( function(x) {
+          if(x < fundamental * 0.66) return x / fundamental;
+          else return Math.abs(Math.sin(Math.PI * x / fundamental));
+      });
+      oct.amps = [0.8, 0.5, 0.2, 0.1, 0.1, 0.2];
+
+      var w = window.innerWidth;
+      var h = window.innerHeight;
+
+      var canvasElement = $("<canvas width='"+ w +"' height='"+ h +"'></canvas>");
+      var cnv = canvasElement.get(0).getContext("2d");
+      canvasElement.appendTo('body');
+
+      var fps = 30, frameCount = 0;
+      
+      setInterval( function() {
+        update();
+        draw();
+      }, 1000 / fps);
+
+      function update() {
+        frameCount++;
+      }
+
+      function draw() {
+        cnv.clearRect(0, 0, w, h);
+        cnv.strokeStyle = "#000";
+        cnv.beginPath();
+        for(var i = 1; i < fundamental + 1; i++) {
+          cnv.moveTo((i - 1) * w / fundamental, h - oct.get(i - 1) * h);
+          cnv.lineTo(i * w / fundamental, h - oct.get(i) * h);
+          cnv.stroke();
+        }
+      }
+
+      $(document).bind("keydown", "left", function(e) { frameCount = 0; });
+
+    </script>
+  </body>
+</html>
