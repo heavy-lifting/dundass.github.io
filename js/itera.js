@@ -1,6 +1,6 @@
 // ***prototype*** library for iterative generative procedures
 
-// include - perlinfunction, ca, logistic (rev?),
+// include - perlinfunction, ca, logistic (rev?), iterativecolor (generalised)
 
 var itera = itera || {};
 (function(it) {

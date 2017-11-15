@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>plive // livecoding p5.js // dundass</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/addons/p5.dom.js"></script>
+    <script src="js/itera.js"></script>
+  </head>
+
+  <body>
+
+  <script>
+
+  // p5.disableFriendlyErrors = true;
+
+  var w = window.innerWidth;
+  var h = window.innerHeight;
+
+  var buffer = "";
+  var inputBox;
+  var ctrlenter = [false, false];
+
+  function setup() {
+    createCanvas(w, h);
+    background(0);
+    inputBox = createInput('');
+  }
+
+  function draw() {
+    try {
+      plive(buffer);
+    } catch(err) {
+
+    }
+  }
+
+  function keyPressed() {
+    //console.log(key + " " + keyCode);
+    if(keyCode === 17) ctrlenter[0] = true;
+    else if(keyCode === 13) ctrlenter[1] = true;
+    if(ctrlenter[0] && ctrlenter[1]) buffer = inputBox.value();
+  }
+
+  function keyReleased() {
+    if(keyCode === 17) ctrlenter[0] = false;
+    else if(keyCode === 13) ctrlenter[1] = false;
+  }
+
+  function plive(s) {
+    eval(s);
+  }
+
+  </script>
+
+  </body>
+</html>
