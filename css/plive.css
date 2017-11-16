@@ -1,0 +1,13 @@
+textarea {
+  outline: none;
+  position: absolute;
+  left: 5%;
+  top: 5%;
+  background: rgba(255,255,255,0.6);
+  wrap: off;
+  white-space: nowrap;
+  font-size: 2em;
+}
+canvas {
+  border: 0 none;
+}

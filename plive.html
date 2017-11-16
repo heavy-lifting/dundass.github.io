@@ -8,6 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/addons/p5.dom.js"></script>
     <script src="js/itera.js"></script>
+    <link rel="stylesheet" href="css/plive.css"
   </head>
 
   <body>
@@ -16,8 +17,11 @@
 
   // p5.disableFriendlyErrors = true;
 
+  var date = new Date();
   var w = window.innerWidth;
   var h = window.innerHeight;
+  var f = 0;
+  var t = date.getMilliseconds() / 1000.0;
 
   var buffer = "";
   var inputBox;
@@ -26,13 +30,14 @@
   function setup() {
     createCanvas(w, h);
     background(0);
-    inputBox = createInput('');
-    var col = color(255, 255, 255, 140);
-    inputBox.style("background-color", col);
-    inputBox.position(30, 30);
-    inputBox.attribute("type", "text");
-    inputBox.attribute("autofocus", "autofocus");
-    inputBox.size(400);
+    // inputBox = createInput('');
+    // var col = color(255, 255, 255, 140);
+    // inputBox.style("background-color", col);
+    // inputBox.position(30, 30);
+    // inputBox.attribute("type", "text");
+    // inputBox.attribute("autofocus", "autofocus");
+    // inputBox.size(400);
+    inputBox = document.getElementById("codearea");
   }
 
   function draw() {
@@ -47,7 +52,7 @@
     //console.log(key + " " + keyCode);
     if(keyCode === 17) ctrlenter[0] = true;
     else if(keyCode === 13) ctrlenter[1] = true;
-    if(ctrlenter[0] && ctrlenter[1]) buffer = inputBox.value();
+    if(ctrlenter[0] && ctrlenter[1]) buffer = inputBox.value;
   }
 
   function keyReleased() {
@@ -56,10 +61,14 @@
   }
 
   function plive(s) {
+    f = frameCount;
+    t = date.getMilliseconds() / 1000.0;
     eval(s);
   }
 
   </script>
+
+  <textarea id="codearea" rows="20" cols="50">background(0);</textarea>
 
   </body>
 </html>
