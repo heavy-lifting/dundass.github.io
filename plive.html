@@ -27,6 +27,12 @@
     createCanvas(w, h);
     background(0);
     inputBox = createInput('');
+    var col = color(255, 255, 255, 140);
+    inputBox.style("background-color", col);
+    inputBox.position(30, 30);
+    inputBox.attribute("type", "text");
+    inputBox.attribute("autofocus", "autofocus");
+    inputBox.size(400);
   }
 
   function draw() {
