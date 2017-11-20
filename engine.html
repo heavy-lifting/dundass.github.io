@@ -4,22 +4,52 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/plive.css" />
     <title>engine visuals // vjaz</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/addons/p5.sound.js"></script>
     <script src="js/itera.js"></script>
 
   </head>
 
   <body>
     <script>
-      p5.disableFriendlyErrors = true;
+
+			var w = window.innerWidth;
+			var h = window.innerHeight;
+
+      // p5.disableFriendlyErrors = true;
+      var mic;
+      var cols;
+      var cucArtwork;
+      var x = 0.001, y, r = 0.85;
 
       function setup() {
-
+        createCanvas(w, h);
+        background(0);
+        // cucArtwork = loadImage('assets/cucwater.png', function(img) { cols=getPalette(img); });
+        mic = new p5.AudioIn()
+        // mic.start();
+        // var lev = mic.getLevel();
       }
 
       function draw() {
-        
+        r = 0.86 + (mouseX / width) / 30;
+        background(0);
+        push();
+        translate(w/2, 0);
+        x = itera.logistic(x,r);
+        y = itera.logistic(x,r);
+        fill(255);
+        // ellipse(-w + x * w * 2, y * h * 3 - h*2, 10, 10);
+        // x = y;
+        ellipse(x * w/2, y * h, 10, 10);
+        x = itera.logistic(y,r);
+        pop();
+      }
+
+      function getPalette(img) {
+
       }
 
     </script>

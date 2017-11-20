@@ -6,6 +6,7 @@ textarea {
   top: 5%;
   background: rgba(255,255,255,0.5);
   wrap: off;
+  /* has trouble on FF */
   white-space: nowrap;
   font-size: 2em;
 }
@@ -13,4 +14,6 @@ canvas, body {
   border: 0 none;
   margin: 0px;
   padding: 0px;
+  overflow: hidden;
+  /*background: #000000;*/
 }

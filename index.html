@@ -22,9 +22,9 @@
 
 			</p>
 
-			<p id="output">
+			<!-- <p id="output">
 
-			</p>
+			</p> -->
 		</div>
 
 		<script>
@@ -36,14 +36,13 @@
 			if(w > h) mainDiv.style.width = h + "px";
 			mainDiv.style.height = h * 0.95 + "px";
 
-			var x = [];
-			for(var i = 0; i < 32; i++) x.push(parseInt(Math.random() * 2));
-			var y = itera.ca1d(x);
-			// var y = itera.perlinfunction(20, x => Math.sin(x/100), [1.0,1.0]);
-			var out = document.getElementById("output");
-			out.innerHTML = "result: " + y;
-
-			window.onclick = function(event) { y = itera.ca1d(y); out.innerHTML = "result: " + y; };
+			// var x = [];
+			// for(var i = 0; i < 32; i++) x.push(parseInt(Math.random() * 2));
+			// var y = itera.ca1d(x);
+			// var out = document.getElementById("output");
+			// out.innerHTML = "result: " + y;
+      //
+			// window.onclick = function(event) { y = itera.ca1d(y); out.innerHTML = "result: " + y; };
 		</script>
 	</body>
 </html>
