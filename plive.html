@@ -7,6 +7,7 @@
     <title>plive // livecoding p5.js // dundass</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/addons/p5.dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/addons/p5.sound.js"></script>
     <script src="js/itera.js"></script>
     <link rel="stylesheet" href="css/plive.css"
   </head>
@@ -17,11 +18,12 @@
 
   // p5.disableFriendlyErrors = true;
 
-  var date = new Date();
   var w = window.innerWidth;
   var h = window.innerHeight;
   var f = 0;
-  var t = date.getMilliseconds() / 1000.0;
+  var t = 0;
+
+  var mic;
 
   var buffer = "";
   var inputBox;
@@ -31,29 +33,22 @@
     createCanvas(w, h);
     document.documentElement.style.overflow = 'hidden';
     background(0);
-    // inputBox = createInput('');
-    // var col = color(255, 255, 255, 140);
-    // inputBox.style("background-color", col);
-    // inputBox.position(30, 30);
-    // inputBox.attribute("type", "text");
-    // inputBox.attribute("autofocus", "autofocus");
-    // inputBox.size(400);
     inputBox = document.getElementById("codearea");
+    mic = new p5.AudioIn();
+    mic.start();
   }
 
   function draw() {
-    try {
-      plive(buffer);
-    } catch(err) {
-
-    }
+    plive(buffer);
   }
 
   function keyPressed() {
     //console.log(key + " " + keyCode);
     if(keyCode === 17) ctrlenter[0] = true;
     else if(keyCode === 13) ctrlenter[1] = true;
-    if(ctrlenter[0] && ctrlenter[1]) buffer = inputBox.value;
+    if(ctrlenter[0] && ctrlenter[1]) {
+      buffer = inputBox.value;
+    }
   }
 
   function keyReleased() {
@@ -62,9 +57,14 @@
   }
 
   function plive(s) {
+    var date = new Date();
     f = frameCount;
-    t = date.getMilliseconds() / 1000.0;
-    eval(s);
+    t = date.getTime() / 1000.0;
+    try {
+      eval(s);
+    } catch(err) {
+      console.log(err);
+    }
   }
 
   </script>
