@@ -35,11 +35,14 @@
     background(0);
     inputBox = document.getElementById("codearea");
     mic = new p5.AudioIn();
-    mic.start();
+    //mic.start();
   }
 
   function draw() {
-    plive(buffer);
+    var date = new Date();
+    f = frameCount;
+    t = date.getTime() / 1000.0;
+    draw_();
   }
 
   function keyPressed() {
@@ -48,6 +51,7 @@
     else if(keyCode === 13) ctrlenter[1] = true;
     if(ctrlenter[0] && ctrlenter[1]) {
       buffer = inputBox.value;
+      plive(buffer);
     }
   }
 
@@ -57,9 +61,6 @@
   }
 
   function plive(s) {
-    var date = new Date();
-    f = frameCount;
-    t = date.getTime() / 1000.0;
     try {
       eval(s);
     } catch(err) {
@@ -67,9 +68,13 @@
     }
   }
 
+  function draw_() {
+    background(0);
+  }
+
   </script>
 
-  <textarea id="codearea" rows="20" cols="50">background(0);</textarea>
+  <textarea id="codearea" rows="20" cols="50">draw_ = function() {&#13;&#10; background(0);&#13;&#10;}</textarea>
 
   </body>
 </html>
