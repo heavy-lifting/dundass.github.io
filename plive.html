@@ -25,7 +25,6 @@
 
   var mic;
 
-  var buffer = "";
   var inputBox;
   var ctrlenter = [false, false];
 
@@ -50,8 +49,7 @@
     if(keyCode === 17) ctrlenter[0] = true;
     else if(keyCode === 13) ctrlenter[1] = true;
     if(ctrlenter[0] && ctrlenter[1]) {
-      buffer = inputBox.value;
-      plive(buffer);
+      plive(inputBox.value);
     }
   }
 
@@ -63,6 +61,7 @@
   function plive(s) {
     try {
       eval(s);
+      // eval('draw = function() { var date=new Date(); f=frameCount; t=date.getTime()/1000.0;' + s + '}');  // <- can make sutin like this but execute once capability too ?
     } catch(err) {
       console.log(err);
     }
@@ -72,9 +71,14 @@
     background(0);
   }
 
+  function startRemote(port) {
+    document.getElementById('codearea').style.visibility = "hidden";
+    // start listening on localhost 'port' ...
+  }
+
   </script>
 
-  <textarea id="codearea" rows="20" cols="50">draw_ = function() {&#13;&#10; background(0);&#13;&#10;}</textarea>
+  <textarea id="codearea" rows="20" cols="50" autofocus>draw_ = function() {&#13;&#10; background(0);&#13;&#10;}</textarea>
 
   </body>
 </html>

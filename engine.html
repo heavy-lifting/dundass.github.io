@@ -25,7 +25,7 @@
       var cols;
       var cucArtwork, cucs = [], band = [];
 
-      var cuc;
+      var cuc, psys;
 
       function setup() {
         createCanvas(w, h);
@@ -39,12 +39,18 @@
         mic = new p5.AudioIn();
 
         cuc = new vjaz.Cucumber();
+        psys = new vjaz.WateryParticles(100);
+        psys.speed(1);
         // mic.start();
-        // var lev = mic.getLevel();
       }
 
       function draw() {
+        background(0);
         // cuc.render(cucs[0], cols);
+        psys.attract(new p5.Vector(w/2,h/2), .002);
+        // var force = new p5.Vector(0.02,0.05);
+        // psys.apply(force);
+        psys.renderImage(cucs);
       }
 
     </script>
