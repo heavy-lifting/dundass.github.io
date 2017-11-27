@@ -8,6 +8,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/addons/p5.dom.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/addons/p5.sound.js"></script>
+    <script src="js/socket.io.js"></script>
+    <script src="js/vjaz.js"></script>
     <script src="js/itera.js"></script>
     <link rel="stylesheet" href="css/plive.css"
   </head>
@@ -27,6 +29,7 @@
 
   var inputBox;
   var ctrlenter = [false, false];
+  var sock;
 
   function setup() {
     createCanvas(w, h);
@@ -71,9 +74,17 @@
     background(0);
   }
 
-  function startRemote(port) {
-    document.getElementById('codearea').style.visibility = "hidden";
-    // start listening on localhost 'port' ...
+  function receiveRemote(port) {
+    // document.getElementById('codearea').style.visibility = "hidden";
+    // sock = new WebSocket("ws://localhost:" + port + "/");
+    // sock.onopen = function() { console.log("start listening on localhost port " + port); };
+    // sock.onmessage = function(e) { plive(e.data) };
+    // sock.onclose = function() { console.log("connection closed") };
+    // window.onbeforeunload = function(e) { sock.close(); };
+    sock = io.connect('http://localhost:' + port);
+    sock.on('connect', function() { console.log("listening on localhost port " + port); });
+    sock.on('plive', function(data) { console.log(data.s); plive(data.s); });
+    sock.on('disconnect', function() { console.log("connection closed"); });
   }
 
   </script>

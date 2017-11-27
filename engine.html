@@ -28,6 +28,9 @@
       var cuc, psys;
 
       function setup() {
+        var ar = [0,.1,.2,.3,.4,.5];
+        ar = ar.map((x, i, arr) => itera.logistic(arr[i-1]));
+        console.log(ar);
         createCanvas(w, h);
         colorMode(HSB, 255);
         background(0);
@@ -40,14 +43,16 @@
 
         cuc = new vjaz.Cucumber();
         psys = new vjaz.WateryParticles(100);
-        psys.speed(1);
+        psys.speed(0.1);
+        psys.wrap = false;
         // mic.start();
       }
 
       function draw() {
         background(0);
         // cuc.render(cucs[0], cols);
-        psys.attract(new p5.Vector(w/2,h/2), .002);
+        var t = frameCount / 200.0;
+        psys.attract(new p5.Vector(w/2-sin(t)*w/20,h/2-cos(t)*h/20), .002);
         // var force = new p5.Vector(0.02,0.05);
         // psys.apply(force);
         psys.renderImage(cucs);

@@ -1,6 +1,11 @@
 from Tkinter import *
+import socket
 
+HOST = "localhost"
+PORT = 3000
 ctrlenter = [False, False]
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.connect((HOST, PORT))
 
 def keyup(e):
     #print 'up', e.keysym
@@ -8,7 +13,7 @@ def keyup(e):
         ctrlenter[0] = False
     elif e.keysym == "Return":
         ctrlenter[1] = False
-    print ctrlenter
+    #print ctrlenter
 
 def keydown(e):
     #print 'down', e.keysym
@@ -16,16 +21,13 @@ def keydown(e):
         ctrlenter[0] = True
     elif e.keysym == "Return":
         ctrlenter[1] = True
-    print ctrlenter
+    #print ctrlenter
     if ctrlenter[0] and ctrlenter[1]:
         sendplive()
         return "break"
 
 def onclick():
     pass
-
-def sendplive():
-    print "update p5"
 
 root = Tk()
 text = Text(root)
@@ -34,5 +36,10 @@ text.bind("<KeyPress>", keydown)
 text.bind("<KeyRelease>", keyup)
 text.pack()
 text.focus_set()
+
+def sendplive():
+    print "update p5"
+    print text.get("1.0", END)
+    sock.sendall(str(text.get("1.0", END)))
 
 root.mainloop()

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>plive sender // dundass</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/addons/p5.dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/addons/p5.sound.js"></script>
+    <script src="js/socket.io.js"></script>
+    <script src="js/itera.js"></script>
+    <link rel="stylesheet" href="css/plive.css"
+  </head>
+
+  <body>
+
+  <script>
+
+  // a page for sending p5.js code across localhost to plive.html in remote mode
+
+  var w = window.innerWidth;
+  var h = window.innerHeight;
+  var f = 0;
+  var t = 0;
+
+  var inputBox;
+  var ctrlenter = [false, false];
+  var sock;
+
+  function setup() {
+    noCanvas();
+    document.documentElement.style.overflow = 'hidden';
+    document.documentElement.style.background = 'rgba(0,0,0,1)';
+    inputBox = document.getElementById("codearea");
+    sendRemote(3000);
+    //mic.start();
+  }
+
+  function draw() {
+  }
+
+  function keyPressed() {
+    //console.log(key + " " + keyCode);
+    if(keyCode === 17) ctrlenter[0] = true;
+    else if(keyCode === 13) ctrlenter[1] = true;
+    if(ctrlenter[0] && ctrlenter[1]) {
+      var data = {
+        s: inputBox.value
+      }
+      console.log(data.s);
+      sock.emit('plive', data);
+    }
+  }
+
+  function keyReleased() {
+    if(keyCode === 17) ctrlenter[0] = false;
+    else if(keyCode === 13) ctrlenter[1] = false;
+  }
+
+  function sendRemote(port) {
+    // document.getElementById('codearea').style.visibility = "hidden";
+    // sock = new WebSocket("ws://localhost:" + port + "/");
+    // sock.onopen = function() { console.log("start listening on localhost port " + port); };
+    // sock.onmessage = function(e) { plive(e.data) };
+    // sock.onclose = function() { console.log("connection closed") };
+    // window.onbeforeunload = function(e) { sock.close(); };
+    sock = io.connect('http://localhost:' + port);
+    sock.on('connect', function() { console.log("sending to localhost port " + port); });
+    sock.on('disconnect', function() { console.log("connection closed"); });
+  }
+
+  </script>
+
+  <textarea id="codearea" rows="20" cols="50" autofocus>draw_ = function() {&#13;&#10; background(0);&#13;&#10;}</textarea>
+
+  </body>
+</html>
