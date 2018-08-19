@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>acid mass vij</title>
+    <style>
+    * {
+        margin: 0;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+    }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="cnv" width="1000" height="1000"></canvas>
+  </body>
+
+  <script>
+
+    var cnv = document.getElementById('cnv'),
+        ctx = cnv.getContext('2d');
+
+    var w = cnv.width, h = cnv.height;
+    ctx.fillStyle = '#000'
+    ctx.fillRect(0, 0, w, h)
+
+    setInterval( function() {
+      // obv not actually this lol
+
+      var grad = ctx.createRadialGradient(w/2, h/2, 10, w/2 + (Math.random()*w/10), h/2 + (Math.random()*h/10), w/4)
+      grad.addColorStop(0, 'white')
+      grad.addColorStop(0.5, '#943EAC')
+      grad.addColorStop(1.0, 'black')
+
+      ctx.fillStyle=grad
+      ctx.fillRect(w/8, h/8, 3*w/4, 3*h/4)
+
+    }, 60)
+
+  </script>
+</html>

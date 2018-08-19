@@ -11,12 +11,18 @@
     <script src="js/socket.io.js"></script>
     <script src="js/vjaz.js"></script>
     <script src="js/itera.js"></script>
-    <link rel="stylesheet" href="css/plive.css"
+    <link rel="stylesheet" href="css/plive.css" />
+    <script src="codemirror/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="codemirror/lib/codemirror.css">
+    <script src="codemirror/mode/javascript/javascript.js"></script>
+
   </head>
 
   <body>
 
   <script>
+
+  // try CodeMirror for editor
 
   p5.disableFriendlyErrors = true;
 
@@ -28,32 +34,68 @@
 
   var mic;
 
-  var inputBox;
+  var textArea, codeMirror;
   var ctrlenter = [false, false];
   var sock;
+
+  // engine stuff
+  var cols;
+  var cucArtwork, cucs = [], band = [], imgs = [];
+
+  var cuc, psys, form, eye, ca2d, cacol;
 
   function setup() {
     createCanvas(w, h);
     document.documentElement.style.overflow = 'hidden';
     background(0);
-    inputBox = document.getElementById("codearea");
+    textArea = document.getElementById("codearea");
+    // codeMirror = CodeMirror(function(elt) {
+    //   textArea.parentNode.replaceChild(elt, textArea);
+    // }, {value: textArea.value});
+    // var codeMirror = CodeMirror(document.body, {
+    //   value: "draw_ = function() {\n background(0);\n}",
+    //   mode:  "javascript"
+    // });
+    //image(cucArtwork,w/4+((i+f)*w/20)%w/2,h/10+20*sin((f+i)/20),w/(80*sin(f/30)+50),h/1.5);
+    //image(cucArtwork,f%w+((i+f)*w/20)%w/2,h/10+20*sin((f+i)/20),w/(80*sin(f/30)+50),h/1.5);
+
     mic = new p5.AudioIn();
-    //mic.start();
+
+    // engine stuff
+    colorMode(HSB, 255);
+    cols = [color(109,112,102),color(96,109,133),color(16,172,150),color(3,140,175),color(38,148,187),color(234,223,228)];
+    cucArtwork = loadImage('assets/cucwater.png');
+    cucs[0] = loadImage('assets/cuc1.png');
+    cucs[1] = loadImage('assets/cuc2.png');
+    cucs[2] = loadImage('assets/cuc3.png');
+    band[0] = loadImage('assets/dom.png');
+    band[1] = loadImage('assets/james.png');
+    band[2] = loadImage('assets/matias.png');
+    band[3] = loadImage('assets/charlie.png');
+    imgs = [cucs[0], cucs[1], cucs[2], band[0], band[1], band[2], band[3]];
+    cuc = new vjaz.Cucumber();
+    psys = new vjaz.WateryParticles(100);
+    form = new vjaz.Formulate(1, 3);
+    eye = new vjaz.BreathingEye();
+    ca2d = new itera.CA2D({numStates: 6, sizeX: 40, sizeY: 40});
+    cacol = new vjaz.ColorCA2D(ca2d);
+
+    mic.start();
+    // receiveRemote(3000);
   }
 
   function draw() {
-    var date = new Date();
     f = frameCount;
-    t = date.getTime() / 1000.0;
+    t = performance.now() * 1000;
     draw_();
   }
 
   function keyPressed() {
-    //console.log(key + " " + keyCode);
+    // console.log(key + " " + keyCode);
     if(keyCode === 17) ctrlenter[0] = true;
     else if(keyCode === 13) ctrlenter[1] = true;
     if(ctrlenter[0] && ctrlenter[1]) {
-      plive(inputBox.value);
+      plive(textArea.value);
     }
   }
 
@@ -83,16 +125,17 @@
   }
 
   function receiveRemote(port) {
-    // document.getElementById('codearea').style.visibility = "hidden";
-    // sock = new WebSocket("ws://localhost:" + port + "/");
-    // sock.onopen = function() { console.log("start listening on localhost port " + port); };
-    // sock.onmessage = function(e) { plive(e.data) };
-    // sock.onclose = function() { console.log("connection closed") };
-    // window.onbeforeunload = function(e) { sock.close(); };
+    document.getElementById('codearea').style.visibility = "hidden";
     sock = io.connect('http://localhost:' + port);
     sock.on('connect', function() { console.log("listening on localhost port " + port); });
     sock.on('plive', function(data) { console.log(data.s); plive(data.s); });
     sock.on('disconnect', function() { console.log("connection closed"); });
+  }
+
+  function loadjs(url) {
+    var e = document.createElement('script');
+    e.src = url;
+    document.head.appendChild(e);
   }
 
   </script>

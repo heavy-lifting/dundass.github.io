@@ -2,8 +2,8 @@ var vutils = vutils || {};
 (function(vj) {
 
   var ease = function(val, tar, e) {
-    var d = Math.abs(val - tar);
-    if(d > 0.0001) val += (d * e);
+    var d =  tar - val;
+    if(Math.abs(d) > 0.00001) val += (d * e);
     return val;
   }
 

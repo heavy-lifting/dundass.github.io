@@ -4,9 +4,9 @@
 
 var itera = itera || {};
 (function(it) {
-  "use strict";
+  'use strict';
 
-  var createArray = function(length) {
+  var _createArray = function(length) {
     var arr = new Array(length || 0),
         i = length;
     if(arguments.length > 1) {
@@ -32,16 +32,97 @@ var itera = itera || {};
            a[(i+1)%a.length] === j%n) b[i%a.length] = r[j];
       }
     }
+    // a.map(function(x, i, arr) {
+    //   r.map(function() {
+    //
+    //   });
+    // });
+
     return b;
   }
 
-  var perlinfunction = function(x, f, amps) { // version containing no persistent state
+  var normalise = function (arr) {  // useful for normalising CA output & any other arr ! what if CA output was normalised anyway ?
+    var max = arr.reduce(function (x, a) {
+      return x > a ? x : a;
+    });
+    return arr.map(function (x) {
+      return x / max;
+    });
+  }
+
+  var mutate = function (a, p, max) { // mutateBy ?
+    p = p || 0.5;
+    max = max || 1;
+    return a.map(function (x) {
+      var r = Math.random();
+      return (r < p ? (Math.random() * max) : x);
+    });
+  }
+
+  var deltaArray = function () {
+    var prev = [];
+    return function (next) {
+      var delta = next.map(function (nxt, idx) {
+        return nxt - prev[idx]; // or should delta be an array of bool => return (nxt === prev[idx]) ?
+      });
+      prev = next;
+      return delta;
+    }
+  }
+
+  var perlinfunction = function(x, f, amps) { // version containing no persistent state - rename furlin ?
     var sum = 0, ampsum = 0;
     for(var i = 0; i < amps.length; i++) {
       sum += (f(x * (i+1)) * amps[i]);
       ampsum += amps[i];
     }
     return (sum / ampsum);
+  }
+
+  var lorenz = function (vec, constants, dt) {  // broked !
+    constants = constants || {a: 10, b: 28, c: 8.0/3.0};
+    dt = dt || 0.001;
+    var dx = (constants.a * (vec.x - vec.y)) * dt,
+        dy = (vec.x * (constants.b - vec.z) - vec.y) * dt,
+        dz = (vec.x * vec.y - constants.c * vec.z) * dt;
+
+    return {x: vec.x + dx, y: vec.y + dy, z: vec.z + dz};
+  }
+
+  // var v = {x: 0.01, y: 0.5, z: 0},
+  //     c = {a: 10, b: 28, c: 8.0/3.0};
+
+  // setInterval(function () {
+  //   v = lorenz(v, c);
+  //   console.log(v.x+' '+v.y+' '+v.z);
+  // }, 100);
+
+  // var _penAngle = 0;
+  var doublependulum = function () {  // args ?
+    // var p1 = {
+    //   mass: 10,
+    //   leng: 200,
+    //   angle: 0,
+    // }
+    var l1 = 200, l2 = 200, m1 = 10, m2 = 10, g = 1;
+    var ang1 = { angle: 0, vel: 0, acc: 0 };
+    var ang2 = { angle: 0, vel: 0, acc: 0 };
+    var loc1 = { x: l1 * Math.sin(a1), y: l1 * Math.cos(a1) };
+    var loc2 = { x: loc1.x + l2 * Math.sin(a2), y: loc1.y + l2 * Math.cos(a2) };
+
+    ang1.acc = ( -g*(2*m1+m2)*Math.sin(ang1.angle) - m2*g*Math.sin(ang1.angle-2*ang2.angle) - 2*Math.sin(ang1.angle-ang2.angle)*m2*(Math.pow(ang2.vel,2)*l2+Math.pow(ang1.vel,2)*l1*Math.cos(ang1.angle-ang2.angle)) )
+              / ( l1*(2*m1+m2-m2*Math.cos(2*ang1.angle-2*ang2.angle)) );
+
+    ang2.acc = ( 2*Math.sin(ang1.angle-ang2.angle)*(Math.pow(ang1.vel,2)*l1*(m1+m2) + g*(m1+m2)*Math.cos(ang1.angle) + Math.pow(ang2.vel,2)*l2*m2*Math.cos(ang1.angle-ang2.angle)) )
+              / ( l2*(2*m1+m2-m2*Math.cos(2*ang1.angle-2*ang2.angle)) );
+
+    ang1.vel += ang1.acc;
+    ang1.angle += ang1.vel;
+    ang2.vel += ang2.acc;
+    ang2.angle += ang2.vel;
+
+    return [loc1, loc2]; // ?? or the angles ?
+
   }
 
   var CA2D = function(opt) {
@@ -57,7 +138,7 @@ var itera = itera || {};
     //   }
     // }
     this.ruleset = [];
-    for(var i = 0; i < this.numStates * 8; i++) this.ruleset[i] = 0;
+    for(var i = 0; i < this.numStates * 8; i++) this.ruleset.push(0);
     this.genCount = 0;
   }
 
@@ -92,15 +173,15 @@ var itera = itera || {};
         for(var j = this.sizeY-1; j < (2 * this.sizeY) - 1; j++) {
           // this.buffer[i%this.sizeX][j%this.sizeY] = 0;
           tot = 0;
-          for(var k = -1; k < 2; k++) {
-            for(var l = -1; l < 2; l++) {
-              if((k === 0 && l === 0) === false) tot += this.cells[(i+k)%this.sizeX][(j+l)%this.sizeY];
+          for(var k = i-1; k < i+2; k++) {
+            for(var l = j-1; l < j+2; l++) {
+              if((k === i && l === j) === false) tot += this.cells[k%this.sizeX][l%this.sizeY];
             }
           }
-          for(var r = 0; r < this.ruleset.length; r++) {
-            if(tot === r) this.buffer[i%this.sizeX][j%this.sizeY] = this.ruleset[r];
-            // else b[i%this.sizeX][j%this.sizeY] = this.cells[i%this.sizeX][j%this.sizeY];
-          }
+          // for(var k = 0; k < 9; k++) {
+          //   if(k !== 4) tot += this.cells[(i+(k%3))%this.sizeX][(j+(k/3))%this.sizeY];
+          // }
+          this.buffer[j%this.sizeX][i%this.sizeY] = this.ruleset[tot];
         }
       }
       this.cells = this.buffer;
@@ -108,27 +189,38 @@ var itera = itera || {};
     }
   }
 
-  var PerlinFunction = function(opt) {  // stateful version - keep ?
-    var opt = opt || {};
-    this.f = opt.f;
-    this.amps = typeof opt.amps !== 'undefined' ? opt.amps : [1.0];
-  }
-
-  PerlinFunction.prototype = {
-    get: function(x) {
-      var sum = 0, ampsum = 0;
-      for(var i = 0; i < this.amps.length; i++) {
-        sum += (this.f(x * (i+1)) * this.amps[i]);
-        ampsum += this.amps[i];
-      }
-      return (sum / ampsum);
-    }
-  }
+  // var PerlinFunction = function(opt) {  // stateful version - keep ?
+  //   var opt = opt || {};
+  //   this.f = opt.f;
+  //   this.amps = typeof opt.amps !== 'undefined' ? opt.amps : [1.0];
+  // }
+  //
+  // PerlinFunction.prototype = {
+  //   get: function(x) {
+  //     var sum = 0, ampsum = 0;
+  //     for(var i = 0; i < this.amps.length; i++) {
+  //       sum += (this.f(x * (i+1)) * this.amps[i]);
+  //       ampsum += this.amps[i];
+  //     }
+  //     return (sum / ampsum);
+  //   }
+  // }
 
   it.logistic = logistic;
   it.ca1d = ca1d;
+  it.mutate = mutate;
   it.perlinfunction = perlinfunction;
   it.CA2D = CA2D;
-  it.PerlinFunction = PerlinFunction;
 
+})(itera);
+
+(function(itera) {
+  'use strict';
+  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = itera; // in nodejs
+  } else if (typeof exports !== 'undefined') {
+    exports = itera;  // commonjs style
+  } else {
+    window.jsfeat = itera; // in ordinary browser attach library to window
+  }
 })(itera);

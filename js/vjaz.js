@@ -2,8 +2,8 @@ var vjaz = vjaz || {};
 (function(vj) {
 
   var ease = function(val, tar, e) {
-    var d = Math.abs(val - tar);
-    if(d > 0.0001) val += (d * e);
+    var d =  tar - val;
+    if(Math.abs(d) > 0.00001) val += (d * e);
     return val;
   }
 
@@ -35,6 +35,9 @@ var vjaz = vjaz || {};
       this.numRects += n;
       this.numRects = this.numRects < 0 ? 0 : this.numRects;
     },
+    size: function(s) {
+      this.lengTar = s;
+    },
     resize: function(s) {
       this.lengTar += s;
     },
@@ -44,7 +47,7 @@ var vjaz = vjaz || {};
       for(var i = 0; i < this.numLayers; i++) {
         for(var j = 0; j < this.numRects; j++) {
           push();
-          // colorMode();
+          colorMode(HSB, 255);
           rectMode(CENTER);
           translate(width / 2, height / 2);
           var r = (t + ((i-1) * t / 3)) + (j * 2 * Math.PI / this.numRects);
@@ -97,6 +100,12 @@ var vjaz = vjaz || {};
   }
 
   ColorCA2D.prototype = {
+    states: function(p) {
+      this.ca.states(p);
+    },
+    rules: function(p) {
+      this.ca.rules(p);
+    },
     render: function() {
       colorMode(HSB, 255);
       rectMode(CORNER);
@@ -203,9 +212,7 @@ var vjaz = vjaz || {};
     },
     apply: function(x, y) {
       var force = new p5.Vector(x, y);
-      for(var i = 0; i < this.particles.length; i++) {
-        this.particles[i].apply(force);
-      }
+      this.particles.map(particle => particle.apply(force))
     },
     attract: function(x, y, damp) {
       damp = typeof damp === 'undefined' ? 0.1 : damp;
@@ -230,6 +237,12 @@ var vjaz = vjaz || {};
     },
     edges: function() {
       if(this.wrap) {
+        // this.particles.map(particle => {
+        //   particle.loc.x = particle.loc.x < 0 ? width - 1 : particle.loc.x;
+        //   particle.loc.y = particle.loc.y < 0 ? height - 1 : particle.loc.y;
+        //   particle.loc.x %= width;
+        //   particle.loc.y %= height;
+        // });
         for(var i = 0; i < this.particles.length; i++) {
           this.particles[i].loc.x = this.particles[i].loc.x < 0 ? width - 1 : this.particles[i].loc.x;
           this.particles[i].loc.y = this.particles[i].loc.y < 0 ? height - 1 : this.particles[i].loc.y;
