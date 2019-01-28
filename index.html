@@ -3,46 +3,102 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<title>dundass</title>
 
 		<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="css/vuepages.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 
-    <script src="js/itera.js"></script>
+		<script src="js/itera.js"></script>
+		<script src="https://unpkg.com/vue"></script>
+		<!-- <script src="https://cdn.jsdelivr.net/gh/dundass/js-utils/vuepages.js"></script> -->
+		<script>
+var vuepages = vuepages || {};
+
+(function(vp) {
+
+	if(typeof window.Vue === 'undefined') throw new Error('Vue not present on window :(');
+	
+	Vue.component('page-section', {
+		props: ['title', 'paragraphs'],
+		data: function() { return {} },
+		methods: {},
+		template:
+			'<div class="section">\
+				  <h2>{{ title }}</h2>\
+				  <p v-for="paragraph in paragraphs">{{ paragraph }}</p>\
+				  <slot></slot>\
+				</div>\
+				'
+	})
+	
+	Vue.component('homepage', {
+		props: ['title', 'headerimage', 'mailto', 'sections'],
+		data: function() { return {} },
+		methods: {},
+		template: 
+			'\
+			<div class="container">\
+			\
+			  <div class="header">\
+				<div class="image-container" v-show="headerimage">\
+					<img class="header-image" v-bind:src="headerimage" id="headerImage">\
+				</div>\
+				<h1>{{ title }}</h1>\
+			  </div>\
+			  \
+			  <div class="main">\
+				<page-section v-for="section in sections" v-bind:title="section.title" v-bind:paragraphs="section.paragraphs">{{section.slot ? section.slot : \'\'}}</page-section>\
+				<slot></slot>\
+				<page-section v-bind:title="\'contact\'">\
+				  <p>\
+					<a v-bind:href="mailto">\
+					{{mailto}}\
+					</a>\
+				  </p>\
+				</page-section>\
+			  </div>\
+			  \
+			</div>'
+	});
+
+})(vuepages);
+		
+		</script>
+		<script>
+		
+			function init() {
+				
+				app = new Vue({
+					el: '#wrapper',
+					data: {
+						sections: [	// maybe change content prop to be an array of strings -> 1 per para
+							{ title: 'hello', paragraphs: ['i make music and visuals, by hand and by machine', 'get in touch if you\'re after audible or visual treats'] },
+							{ title: 'audio', paragraphs: ['i can record, produce and mix your music, create remixes, or play live with TYPE, Lo Egin, TYKE or solo', 'i also put out mostly slow music on the don\'t drone alone label'] },
+							{ title: 'visual', paragraphs: ['i provide live projections for musical events and performances using custom software, and can create music videos using the same processes'] },
+							{ title: 'code', paragraphs: ['i write javascript (Vue.js, Three.js, node.js), (s)css, html, java, and arduino, mostly for creative applications', 'i can make websites such as this one and the don\'t drone alone page', 'for livecoding music, i use FoxDot with Troop to play with my friends'] }
+						]
+					},
+					methods: {},
+					mounted: function () {
+						document.getElementById('wrapper').style.zIndex = 'auto';
+					}
+				})
+				
+			}
+		
+		</script>
 	</head>
 
-	<body>
-		<div id="mainDiv">
-			<h1>dundass</h1>
-
-			<p>
-				hello<br /><br />
-				i make music and visuals, by hand and by machine<br /><br />
-
-			</p>
-
-			<!-- <p id="output">
-
-			</p> -->
+	<body onload="init()">
+	
+		<div id="wrapper" style="z-index: -999">
+			
+			<homepage v-bind:title="'dundass'" v-bind:mailto="'lauriej1316@gmail.com'" v-bind:sections="sections"></homepage>
+			
 		</div>
-
-		<script>
-			var w = window.innerWidth;
-			var h = window.innerHeight;
-			var body = document.getElementsByTagName("body");
-			var mainDiv = document.getElementById("mainDiv");
-			//body[0].style.height = h + "px";
-			if(w > h) mainDiv.style.width = h + "px";
-			mainDiv.style.height = h * 0.95 + "px";
-
-			// var x = [];
-			// for(var i = 0; i < 32; i++) x.push(parseInt(Math.random() * 2));
-			// var y = itera.ca1d(x);
-			// var out = document.getElementById("output");
-			// out.innerHTML = "result: " + y;
-      //
-			// window.onclick = function(event) { y = itera.ca1d(y); out.innerHTML = "result: " + y; };
-		</script>
+		
 	</body>
 </html>
