@@ -19,3 +19,7 @@ html, body {
 .main {
 	color: #dda;
 }
+
+h1, h2 {
+	color: white;
+}

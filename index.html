@@ -13,9 +13,10 @@
 
 		<script src="js/itera.js"></script>
 		<script src="https://unpkg.com/vue"></script>
-		<!-- <script src="https://cdn.jsdelivr.net/gh/dundass/js-utils/vuepages.js"></script> -->
+		<!-- <script src="https://www.gitcdn.xyz/repo/dundass/js-utils/master/vuepages.js"></script> -->
 		<script>
-var vuepages = vuepages || {};
+		
+		var vuepages = vuepages || {};
 
 (function(vp) {
 
@@ -28,14 +29,14 @@ var vuepages = vuepages || {};
 		template:
 			'<div class="section">\
 				  <h2>{{ title }}</h2>\
-				  <p v-for="paragraph in paragraphs">{{ paragraph }}</p>\
+				  <p v-for="paragraph in paragraphs" v-html="paragraph"></p>\
 				  <slot></slot>\
 				</div>\
 				'
 	})
 	
 	Vue.component('homepage', {
-		props: ['title', 'headerimage', 'mailto', 'sections'],
+		props: ['title', 'headerimage', 'mailto', 'contactblurb', 'sections'],
 		data: function() { return {} },
 		methods: {},
 		template: 
@@ -53,6 +54,7 @@ var vuepages = vuepages || {};
 				<page-section v-for="section in sections" v-bind:title="section.title" v-bind:paragraphs="section.paragraphs">{{section.slot ? section.slot : \'\'}}</page-section>\
 				<slot></slot>\
 				<page-section v-bind:title="\'contact\'">\
+				  <p>{{contactblurb}}</p>\
 				  <p>\
 					<a v-bind:href="mailto">\
 					{{mailto}}\
@@ -74,12 +76,17 @@ var vuepages = vuepages || {};
 				app = new Vue({
 					el: '#wrapper',
 					data: {
-						sections: [	// maybe change content prop to be an array of strings -> 1 per para
-							{ title: 'hello', paragraphs: ['i make music and visuals, by hand and by machine', 'get in touch if you\'re after audible or visual treats'] },
-							{ title: 'audio', paragraphs: ['i can record, produce and mix your music, create remixes, or play live with TYPE, Lo Egin, TYKE or solo', 'i also put out mostly slow music on the don\'t drone alone label'] },
-							{ title: 'visual', paragraphs: ['i provide live projections for musical events and performances using custom software, and can create music videos using the same processes'] },
-							{ title: 'code', paragraphs: ['i write javascript (Vue.js, Three.js, node.js), (s)css, html, java, and arduino, mostly for creative applications', 'i can make websites such as this one and the don\'t drone alone page', 'for livecoding music, i use FoxDot with Troop to play with my friends'] }
-						]
+						sections: [
+							{ title: 'hello', paragraphs: ['i make music and visuals, by hand and by machine', 
+														   'get in touch if you\'re after audible or visual treats'] },
+							{ title: 'audio', paragraphs: ['i can record, produce and mix your music, create remixes, or play live with <a href="https://typeensemble.wordpress.com/">TYPE</a>, <a href="https://www.facebook.com/LoEginBrassSabbath/">Lo Egin</a>, <a href="https://dundass.github.io/kvlt.html">TYKE</a> or solo', 
+														   'i also put out mostly slow music on the <a href="https://www.dontdronealone.com">don\'t drone alone</a> label'] },
+							{ title: 'visual', paragraphs: ['i provide live projections for musical events and performances using custom software and the live code environment <a href="https://github.com/ojack/hydra">hydra</a>, and can create music videos using the same processes'] },
+							{ title: 'code', paragraphs: ['i write javascript (Vue.js, Three.js, node.js), (s)css, html, java, and arduino, mostly for creative applications', 
+														  'i can make websites such as this one and the <a href="https://www.dontdronealone.com">don\'t drone alone</a> page', 
+														  'for livecoding music, i use <a href="http://foxdot.org/">FoxDot</a> with <a href="https://github.com/Qirky/Troop/">Troop</a> to play with my friends'] }
+						],
+						contactBlurb: 'please reach out if you\'re interested in collaboration or bookings'
 					},
 					methods: {},
 					mounted: function () {
@@ -96,7 +103,7 @@ var vuepages = vuepages || {};
 	
 		<div id="wrapper" style="z-index: -999">
 			
-			<homepage v-bind:title="'dundass'" v-bind:mailto="'lauriej1316@gmail.com'" v-bind:sections="sections"></homepage>
+			<homepage v-bind:title="'dundass'" v-bind:mailto="'lauriej1316@gmail.com'" v-bind:sections="sections" v-bind:contactblurb="contactBlurb"></homepage>
 			
 		</div>
 		
