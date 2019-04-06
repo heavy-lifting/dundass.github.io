@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>CV | Laurie Johnson</title>
+
+		<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="css/vuepages.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+
+		<script src="https://unpkg.com/vue"></script>
+		<script src="https://cdn.jsdelivr.net/gh/dundass/js-utils/vuepages.js"></script>
+		
+		<script>
+		
+			function init() {
+				
+				app = new Vue({
+					el: '#wrapper',
+					data: {
+						sections: [
+							{ 
+								title: 'Profile',
+								paragraphs: [
+									''
+								] 
+							},	// education in here ?
+							{ 
+								title: 'Skills',
+								paragraphs: [
+									'<b>Reactive Javascript frameworks</b><br><br>1 year writing front-end apps and reusable components using Vue.js. Possess knowledge of reactivity, dynamic rendering and component lifecycle. Strong working knowledge of native JS.',
+									'<b>(S)CSS via Gulp</b><br><br>1.5 years writing SCSS using variables, loops and mixins as well as native CSS transitions, animations and Flex. Daily use of Gulp to compile SCSS to CSS and polyfill for older browsers.',
+									'',
+								]
+							},
+							{ 
+								title: 'Experience',
+								paragraphs: [
+									
+								]
+							},
+						]
+					}
+				});
+				
+			}
+		
+		</script>
+		
+	</head>
+
+	<body onload="init()">
+	
+		<div id="wrapper" style="z-index: -999">
+			
+			<homepage v-bind:title="'Laurie Johnson'" v-bind:mailto="'lauriej1316@gmail.com'" v-bind:sections="sections"></homepage>
+			
+		</div>
+		
+	</body>
+</html>
