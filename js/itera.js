@@ -3,6 +3,7 @@
 // include - perlinfunction, ca, logistic (rev?), iterativecolor (generalised)
 
 var itera = itera || {};
+
 (function(it) {
   'use strict';
 
@@ -11,7 +12,7 @@ var itera = itera || {};
         i = length;
     if(arguments.length > 1) {
       var args = Array.prototype.slice.call(arguments, 1);
-      while(i--) arr[length-1 - i] = createArray.apply(this, args);
+      while(i--) arr[length-1 - i] = _createArray.apply(this, args);
     }
     return arr;
   }
@@ -79,6 +80,28 @@ var itera = itera || {};
     return (sum / ampsum);
   }
 
+  /* var cnv = document.createElement('canvas');
+  cnv.width = 600;
+  cnv.height = 600;
+  var ctx = cnv.getContext('2d'),
+      dat = ctx.getImageData(0, 0, 600, 600);
+  for(var i = 0; i < cnv.width; i++) {
+    var perx = perlinfunction(i, x => Math.abs(Math.sin(x/300)), [0.9,0.5,0.2,0.4,0.1]);
+    for(var j = 0; j < cnv.height; j++) {
+      var pix = (j * cnv.width + i) * 4;
+      dat.data[pix] = perx + perlinfunction(j, x => x % 120, [0.4,0.7,0.3,0.1,0.2]);
+      dat.data[pix + 3] = 255;
+    }
+  }
+  ctx.putImageData(dat, 0, 0);
+  cnv.style.position = 'absolute';
+  cnv.style.left = 0+'px';
+  cnv.style.top = 0+'px';
+  cnv.style.width = 100+'%';
+  cnv.style.height = 100+'%';
+  cnv.style.zIndex = -1;
+  document.body.appendChild(cnv); */
+
   var lorenz = function (vec, constants, dt) {  // broked !
     constants = constants || {a: 10, b: 28, c: 8.0/3.0};
     dt = dt || 0.001;
@@ -130,8 +153,8 @@ var itera = itera || {};
     this.numStates = opt.numStates;
     this.sizeX = opt.sizeX;
     this.sizeY = opt.sizeY === 'undefined' ? opt.sizeX : opt.sizeY;
-    this.cells = createArray(this.sizeX, this.sizeY);
-    this.buffer = createArray(this.sizeX, this.sizeY);
+    this.cells = _createArray(this.sizeX, this.sizeY);
+    this.buffer = _createArray(this.sizeX, this.sizeY);
     // for(var i = 0; i < this.sizeX; i++) {
     //   for(var j = 0; j < this.sizeY; j++) {
     //     this.cells[i][j] = 0;
@@ -208,8 +231,11 @@ var itera = itera || {};
 
   it.logistic = logistic;
   it.ca1d = ca1d;
+  it.normalise = normalise;
   it.mutate = mutate;
+  it.deltaArray = deltaArray;
   it.perlinfunction = perlinfunction;
+  it.lorenz = lorenz;
   it.CA2D = CA2D;
 
 })(itera);
@@ -221,6 +247,6 @@ var itera = itera || {};
   } else if (typeof exports !== 'undefined') {
     exports = itera;  // commonjs style
   } else {
-    window.jsfeat = itera; // in ordinary browser attach library to window
+    window.itera = itera; // in ordinary browser attach library to window
   }
 })(itera);
